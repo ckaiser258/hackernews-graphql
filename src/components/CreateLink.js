@@ -24,7 +24,12 @@ const CreateLink = () => {
   });
   return (
     <div>
-      <form onSubmit={(e) => e.preventDefault()}>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          createLink();
+        }}
+      >
         <div className="flex flex-column mt3">
           <input
             className="mb2"
