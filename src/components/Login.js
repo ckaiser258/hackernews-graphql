@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
-import gql from "@apollo/client";
+import gql, { useMutation } from "@apollo/client";
+import { AUTH_TOKEN } from "../constants";
 
 const SIGNUP_MUTATION = gql`
   mutation SignupMutation($email: String!, $password: String!, $name: String!) {
@@ -19,14 +20,35 @@ const LOGIN_MUTATION = gql`
 `;
 
 const Login = () => {
-  const signup = SIGNUP_MUTATION;
-  const login = LOGIN_MUTATION;
   const history = useHistory();
+
   const [formState, setFormState] = useState({
     login: true,
     email: "",
     password: "",
     name: "",
+  });
+
+  const [login] = useMutation(LOGIN_MUTATION, {
+    variables: {
+      email: formState.email,
+      password: formState.password,
+    },
+    onCompleted: ({ login }) => {
+      localStorage.setItem(AUTH_TOKEN, login.token);
+      history.push("/");
+    },
+  });
+  const [signup] = useMutation(SIGNUP_MUTATION, {
+    variables: {
+      name: formState.name,
+      email: formState.email,
+      password: formState.password,
+    },
+    onCompleted: ({ signup }) => {
+      localStorage.setItem(AUTH_TOKEN, login.token);
+      history.push("/");
+    },
   });
 
   return (
