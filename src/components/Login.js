@@ -1,7 +1,26 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
+import gql from "@apollo/client";
+
+const SIGNUP_MUTATION = gql`
+  mutation SignupMutation($email: String!, $password: String!, $name: String!) {
+    signup(email: $email, password: $password, name: $name) {
+      token
+    }
+  }
+`;
+
+const LOGIN_MUTATION = gql`
+  mutation LoginMutation($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
+      token
+    }
+  }
+`;
 
 const Login = () => {
+  const signup = SIGNUP_MUTATION;
+  const login = LOGIN_MUTATION;
   const history = useHistory();
   const [formState, setFormState] = useState({
     login: true,
@@ -53,7 +72,7 @@ const Login = () => {
       <div className="flex mt3">
         <button
           className="pointer mr2 button"
-          onClick={() => console.log("onClick")}
+          onClick={formState.login ? login : signup}
         >
           {formState.login ? "login" : "create account"}
         </button>
