@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
-import gql, { useMutation } from "@apollo/client";
+import { useMutation, gql } from "@apollo/client";
 import { AUTH_TOKEN } from "../constants";
 
 const SIGNUP_MUTATION = gql`
@@ -46,7 +46,7 @@ const Login = () => {
       password: formState.password,
     },
     onCompleted: ({ signup }) => {
-      localStorage.setItem(AUTH_TOKEN, login.token);
+      localStorage.setItem(AUTH_TOKEN, signup.token);
       history.push("/");
     },
   });
